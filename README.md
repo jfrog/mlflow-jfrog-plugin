@@ -29,7 +29,6 @@ For allowing large artifacts upload to JFrog artifactory, it is advisable to inc
 
 
 ## Usage
-
 MLflow model logging code example: 
 ```python
 import mlflow
