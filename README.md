@@ -50,7 +50,6 @@ mlflow.end_run()
 ```
 
 ## Configuration
-
 Additional optional settings (set on mlflow tracking server before its started):
 to use no-ssl artifactory URL, set ARTIFACTORY_NO_SSL to true. default is false
 ```bash
