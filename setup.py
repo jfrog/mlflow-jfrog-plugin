@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mlflow-jfrog-plugin",
-    version="1.0.1",
+    version="1.0.2",
     description="Plugin to store MLFlow experiments artifacts on JFrog Artifactory",
     long_description="JFrog MLFlow plugin is a plugin created by JFrog for customers using MLflow product. "
                      "MLflow is an open-source platform for managing the end-to-end machine learning lifecycle. "

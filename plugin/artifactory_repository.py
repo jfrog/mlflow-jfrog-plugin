@@ -11,12 +11,13 @@ from mlflow.entities import FileInfo
 from mlflow.utils.file_utils import relative_path_to_artifact_path
 _logger = logging.getLogger(__name__)
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 class JFrogArtifactoryRepository(ArtifactRepository):
     is_plugin = True
 
-    def __init__(self, artifact_uri):
+    def __init__(self, artifact_uri, tracking_uri=None):
         super(JFrogArtifactoryRepository, self).__init__(artifact_uri)
+        self.tracking_uri = tracking_uri
         self.debug_mode = (os.getenv("ARTIFACTORY_DEBUG", "false") == "true")
         if self.debug_mode:
             print(f"JFROG: __init__ artifact_uri={artifact_uri}")
