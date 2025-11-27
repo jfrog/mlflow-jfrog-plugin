@@ -11,12 +11,16 @@ from mlflow.entities import FileInfo
 from mlflow.utils.file_utils import relative_path_to_artifact_path
 _logger = logging.getLogger(__name__)
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 class JFrogArtifactoryRepository(ArtifactRepository):
     is_plugin = True
 
-    def __init__(self, artifact_uri):
-        super(JFrogArtifactoryRepository, self).__init__(artifact_uri)
+    def __init__(self, artifact_uri, tracking_uri=None, registry_uri=None):
+        print(f"JFrog: __init__(self, artifact_uri={artifact_uri}, tracking_uri={tracking_uri}, registry_uri={registry_uri})")
+        self.tracking_uri = tracking_uri
+        self.registry_uri = registry_uri
+        super().__init__(artifact_uri, tracking_uri, registry_uri)
+        
         self.debug_mode = (os.getenv("ARTIFACTORY_DEBUG", "false") == "true")
         if self.debug_mode:
             print(f"JFROG: __init__ artifact_uri={artifact_uri}")
@@ -35,8 +39,6 @@ class JFrogArtifactoryRepository(ArtifactRepository):
             print("JFrog: uri = {} repo={}".format(self.rt_url, self.repository))
         if self.token is None:
             raise Exception(f"No Artifactory Token provided through environment ARTIFACTORY_AUTH_TOKEN`")
-
-
 
 
     @staticmethod
@@ -134,9 +136,28 @@ class JFrogArtifactoryRepository(ArtifactRepository):
             file_info_objects.append(file_info)
         return file_info_objects
 
-    def _download_file(self, remote_file_path, local_path):
-        print(f"JFrog: _download_file in remote_file_path={remote_file_path}, local_path={local_path} ")
+    def download_artifacts(self, artifact_path, dst_path=None):
+        if self.debug_mode:
+            print(f"JFrog: Download_artifacts in artifact_path={artifact_path}, dst_path={dst_path}")
+        # Download artifacts from your storage system
+        if dst_path:
+            return self._download_file(artifact_path, dst_path)
+        else:              
+            dst_path = os.path.abspath("./mlruns/"+self.repository+"/"+artifact_path)
+            print(f"JFrog: dst_path={dst_path}")
+            
+            # get destination path directory
+            dst_dir = os.path.dirname(dst_path)
+            # check if the directory exists
+            if not os.path.exists(dst_dir):
+                os.makedirs(dst_dir)
+            self._download_file(artifact_path, dst_path)
 
+            return dst_path            
+
+    def _download_file(self, remote_file_path, local_path):
+        if self.debug_mode:
+            print(f"JFrog: _download_file in remote_file_path={remote_file_path}, local_path={local_path} ")        
         with requests.get(
                 self.rt_url + "/" + self.repository + "/" + remote_file_path, headers=self.get_headers(), stream=True) as r:
             r.raise_for_status()

@@ -1,0 +1,9 @@
+.idea/**
+mlflow_jfrog_plugin.egg-info/**
+build/**
+dist/**
+mlruns/**
+tests/__pycache__/**
+.pytest_cache/**
+plugin/__pycache__/**
+

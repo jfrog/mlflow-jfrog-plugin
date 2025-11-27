@@ -1,0 +1,15 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+.idea/**
+mlflow_jfrog_plugin.egg-info/**
+/__pycache__/**
+/build/**
+/dist/**
+/mlruns/**
+/tests/__pycache__/**

@@ -22,7 +22,7 @@ def is_windows():
 
 def _launch_server(host, port,  backend_store_uri, default_artifact_root,artifacts_destination):
     # cleanup mlruns folder
-
+    print(f"mlflow server STARTING")
     cmd = [
         "mlflow",
         "server",
@@ -45,6 +45,7 @@ def _launch_server(host, port,  backend_store_uri, default_artifact_root,artifac
     _await_server_up_or_die(port)
     return process
 def _launch_RT_server():
+    print(f"RT server STARTING")
     image_name ="test_server_container"
 
     server_is_already_up = _await_RT_server_up_or_die(8081, timeout=5)
@@ -67,7 +68,7 @@ def _launch_RT_server():
         shutil.copyfile('tests/resources/access.config.import.yml', os.path.join(access_dir, "access.config.import.yml"))
 
         with open("/tmp/output.log", "a") as output:
-            subprocess.call(f"docker run --detach --name {image_name} -v {rt_temp_dir}:/var/opt/jfrog/artifactory -p 8082:8082 -p 8081:8081 releases-docker.jfrog.io/jfrog/artifactory-pro:latest", shell=True, stdout=output, stderr=output)
+            subprocess.call(f"docker run --detach --name {image_name} -e JF_SHARED_DATABASE_ALLOWNONPOSTGRESQL=true -v {rt_temp_dir}:/var/opt/jfrog/artifactory -p 8082:8082 -p 8081:8081 releases-docker.jfrog.io/jfrog/artifactory-pro:latest", shell=True, stdout=output, stderr=output)
         print("_launch_RT_server docker statrted")
 
         server_is_up = _await_RT_server_up_or_die(8081, timeout=600)
@@ -82,6 +83,7 @@ def _launch_RT_server():
 
 
 def rt_kill(image_name):
+    print(f"rt_kill STARTING")
     try:
         with open("/tmp/image_kill.log" ,"a") as kill:
             subprocess.call(
@@ -127,6 +129,7 @@ def set_rt_token():
 
 @pytest.fixture(scope="module")
 def artifacts_server():
+    print(f"artifacts_server STARTING")
     with tempfile.TemporaryDirectory() as tmpdir:
         port = get_safe_port()
         print("port={}".format(port))
