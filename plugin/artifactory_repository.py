@@ -136,25 +136,6 @@ class JFrogArtifactoryRepository(ArtifactRepository):
             file_info_objects.append(file_info)
         return file_info_objects
 
-    def download_artifacts(self, artifact_path, dst_path=None):
-        if self.debug_mode:
-            print(f"JFrog: Download_artifacts in artifact_path={artifact_path}, dst_path={dst_path}")
-        # Download artifacts from your storage system
-        if dst_path:
-            return self._download_file(artifact_path, dst_path)
-        else:              
-            dst_path = os.path.abspath("./mlruns/"+self.repository+"/"+artifact_path)
-            print(f"JFrog: dst_path={dst_path}")
-            
-            # get destination path directory
-            dst_dir = os.path.dirname(dst_path)
-            # check if the directory exists
-            if not os.path.exists(dst_dir):
-                os.makedirs(dst_dir)
-            self._download_file(artifact_path, dst_path)
-
-            return dst_path            
-
     def _download_file(self, remote_file_path, local_path):
         if self.debug_mode:
             print(f"JFrog: _download_file in remote_file_path={remote_file_path}, local_path={local_path} ")        

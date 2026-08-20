@@ -10,7 +10,7 @@ setup(
                      "Once MLflow experiments artifacts are available inside JFrog Artifactory, "
                      "they become an integral part of the company's release lifecycle as any other artifact and are also covered by all the security tools provided through the JFrog platform.",
     packages=find_packages(),
-    install_requires=["mlflow>=3.1.4", "requests>=2.31.0"],
+    install_requires=["mlflow>=3.5.0", "requests>=2.31.0"],
     entry_points={
         # Define a ArtifactRepository plugin for artifact URIs with scheme 'artifactory'
         "mlflow.artifact_repository": "artifactory=plugin.artifactory_repository:JFrogArtifactoryRepository",
