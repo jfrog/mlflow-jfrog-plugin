@@ -1,4 +1,4 @@
-mlflow>=2.5
+mlflow>=3.5.0
 tensorflow==2.15.0
 torchvision
 transformers
